@@ -78,12 +78,12 @@
     </div>
   </div>
 
-  <div id="tap-prompt" style="
-    display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75);
+  <div id="overlay" style="
+    position:fixed; inset:0; background:rgba(0,0,0,0.75);
     color:#fff; font-size:1.6rem; font-weight:700; font-family:sans-serif;
-    align-items:center; justify-content:center; text-align:center; z-index:10;
-    cursor:pointer;">
-    Tap to play
+    display:flex; align-items:center; justify-content:center;
+    text-align:center; z-index:10; cursor:default;">
+    Loading…
   </div>
 
   <script>
@@ -93,32 +93,20 @@
       document.getElementById('v2'),
       document.getElementById('v3'),
     ];
-    const prompt = document.getElementById('tap-prompt');
-
-    let tapped = false;
-    let allReady = false;
+    const overlay = document.getElementById('overlay');
 
     function startAll() {
-      prompt.style.display = 'none';
+      overlay.style.display = 'none';
       videos.forEach(v => { v.currentTime = 0; v.play(); });
     }
-
-    // Register tap at any time — if videos ready, go; if not, wait
-    document.addEventListener('click', () => {
-      tapped = true;
-      if (allReady) startAll();
-    }, { once: true });
 
     let ready = 0;
     function onReady() {
       ready++;
       if (ready < videos.length) return;
-      allReady = true;
-      if (tapped) {
-        startAll();
-      } else {
-        prompt.style.display = 'flex';
-      }
+      overlay.textContent = 'Tap to play';
+      overlay.style.cursor = 'pointer';
+      overlay.addEventListener('click', startAll, { once: true });
     }
 
     videos.forEach(v => {
