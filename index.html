@@ -32,7 +32,7 @@
       gap: 8px;
     }
 
-    .caption {
+.caption {
       text-align: center;
       font-size: 1.3rem;
       font-weight: 700;
@@ -95,18 +95,30 @@
     ];
     const prompt = document.getElementById('tap-prompt');
 
+    let tapped = false;
+    let allReady = false;
+
     function startAll() {
       prompt.style.display = 'none';
       videos.forEach(v => { v.currentTime = 0; v.play(); });
     }
 
-    // Wait until all videos are buffered, then show tap prompt
+    // Register tap at any time — if videos ready, go; if not, wait
+    document.addEventListener('click', () => {
+      tapped = true;
+      if (allReady) startAll();
+    }, { once: true });
+
     let ready = 0;
     function onReady() {
       ready++;
       if (ready < videos.length) return;
-      prompt.style.display = 'flex';
-      document.addEventListener('click', startAll, { once: true });
+      allReady = true;
+      if (tapped) {
+        startAll();
+      } else {
+        prompt.style.display = 'flex';
+      }
     }
 
     videos.forEach(v => {
