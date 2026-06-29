@@ -29,50 +29,52 @@
     .cell {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-    }
-
-    video {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 4px;
-      background: #000;
+      gap: 8px;
     }
 
     .caption {
       text-align: center;
-      font-size: 0.85rem;
-      color: #aaa;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #fff;
       padding: 2px 0;
+    }
+
+    video {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
+      display: block;
+      border-radius: 4px;
+      background: #000;
     }
   </style>
 </head>
 <body>
   <div class="grid">
     <div class="cell">
+      <div class="caption">Uncoated MSN</div>
       <video id="v0" muted loop playsinline preload="auto">
         <source src="video0.mp4" type="video/mp4">
       </video>
-      <div class="caption">Uncoated MSN</div>
     </div>
     <div class="cell">
+      <div class="caption">MSN-Lf</div>
       <video id="v1" muted loop playsinline preload="auto">
         <source src="video1.mp4" type="video/mp4">
       </video>
-      <div class="caption">MSN-Lf</div>
     </div>
     <div class="cell">
+      <div class="caption">MSN-PEG</div>
       <video id="v2" muted loop playsinline preload="auto">
         <source src="video2.mp4" type="video/mp4">
       </video>
-      <div class="caption">MSN-PEG</div>
     </div>
     <div class="cell">
+      <div class="caption">MSN-PEG-Lf</div>
       <video id="v3" muted loop playsinline preload="auto">
         <source src="video3.mp4" type="video/mp4">
       </video>
-      <div class="caption">MSN-PEG-Lf</div>
     </div>
   </div>
 
