@@ -78,14 +78,6 @@
     </div>
   </div>
 
-  <div id="tap-prompt" style="
-    display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7);
-    color:#fff; font-size:1.4rem; font-weight:700; font-family:sans-serif;
-    align-items:center; justify-content:center; text-align:center; z-index:10;
-    cursor:pointer;">
-    Tap anywhere to play
-  </div>
-
   <script>
     const videos = [
       document.getElementById('v0'),
@@ -93,24 +85,13 @@
       document.getElementById('v2'),
       document.getElementById('v3'),
     ];
-    const prompt = document.getElementById('tap-prompt');
 
-    function startAll() {
-      prompt.style.display = 'none';
-      videos.forEach(v => { v.currentTime = 0; v.play(); });
-    }
-
-    // Wait until all videos have enough data, then try to play together
+    // Sync all videos to start together once all are ready
     let ready = 0;
     function onReady() {
       ready++;
       if (ready < videos.length) return;
-      videos.forEach(v => { v.currentTime = 0; });
-      Promise.all(videos.map(v => v.play())).catch(() => {
-        // Autoplay blocked — show tap overlay
-        prompt.style.display = 'flex';
-        document.addEventListener('click', startAll, { once: true });
-      });
+      videos.forEach(v => { v.currentTime = 0; v.play(); });
     }
 
     videos.forEach(v => {
