@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Videos</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #111;
+      color: #eee;
+      font-family: sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .cell {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    video {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 4px;
+      background: #000;
+    }
+
+    .caption {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #aaa;
+      padding: 2px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid">
+    <div class="cell">
+      <video id="v0" muted loop playsinline preload="auto">
+        <source src="video0.mp4" type="video/mp4">
+      </video>
+      <div class="caption">Video 0</div>
+    </div>
+    <div class="cell">
+      <video id="v1" muted loop playsinline preload="auto">
+        <source src="video1.mp4" type="video/mp4">
+      </video>
+      <div class="caption">Video 1</div>
+    </div>
+    <div class="cell">
+      <video id="v2" muted loop playsinline preload="auto">
+        <source src="video2.mp4" type="video/mp4">
+      </video>
+      <div class="caption">Video 2</div>
+    </div>
+    <div class="cell">
+      <video id="v3" muted loop playsinline preload="auto">
+        <source src="video3.mp4" type="video/mp4">
+      </video>
+      <div class="caption">Video 3</div>
+    </div>
+  </div>
+
+  <script>
+    const videos = [
+      document.getElementById('v0'),
+      document.getElementById('v1'),
+      document.getElementById('v2'),
+      document.getElementById('v3'),
+    ];
+
+    // Wait until all videos can play, then start them together
+    let ready = 0;
+    function onReady() {
+      ready++;
+      if (ready === videos.length) {
+        // Seek all to 0 and fire play simultaneously
+        videos.forEach(v => { v.currentTime = 0; });
+        Promise.all(videos.map(v => v.play())).catch(() => {
+          // Autoplay blocked — play on first user interaction
+          document.addEventListener('click', () => {
+            videos.forEach(v => { v.currentTime = 0; v.play(); });
+          }, { once: true });
+        });
+      }
+    }
+
+    videos.forEach(v => {
+      if (v.readyState >= 3) {
+        onReady();
+      } else {
+        v.addEventListener('canplaythrough', onReady, { once: true });
+      }
+    });
+  </script>
+</body>
+</html>

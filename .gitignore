@@ -1,0 +1,9 @@
+# Original source files — large, not needed in the repo
+BBB*
+*.avi
+
+# Generated locally
+qr_code.png
+
+# Mac junk
+.DS_Store
